@@ -44,10 +44,11 @@ async def upload(files: List[UploadFile] = File(...)):
        # Final file path
        file_path = dest_folder / filename
 
-      # Save the file
-      with open(file_path, "wb") as buffer:
-          shutil.copyfileobj(file.file, buffer)
-      saved_files.append(str(file_path))
+       # Save the file
+       with open(file_path, "wb") as buffer:
+           shutil.copyfileobj(file.file, buffer)
+       # Store the uploaded file paths.
+       saved_files.append(str(file_path))
 
     return {
         "filename": filename,
