@@ -54,7 +54,7 @@ async def upload(files: List[UploadFile] = File(...)):
            raise HTTPException(status_code=400, detail=f"Unsupported file type: {file_ext}")
 
        # Final file path
-       supabase_path = dest_folder / filename
+       supabase_path = f"{dest_folder} / {filename}"
 
        # Read file content
        contents = await file.read()
