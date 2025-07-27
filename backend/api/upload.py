@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+import json
 import os
 import pandas as pd
 import io 
@@ -7,6 +7,7 @@ from typing import List
 from pathlib import Path
 from supabase import Client, create_client
 from dotenv import load_dotenv
+from fastapi import APIRouter, UploadFile, File, HTTPException
 
 # Load environment variables from .env file
 load_dotenv()
@@ -19,14 +20,6 @@ key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 BUCKET_NAME = "artifacts"
 
-# # This gives the directory of the current script
-# BASE_DIR = Path(__file__).resolve().parent / "artifacts"
-# DATA_DIR = BASE_DIR / "data"
-# MODEL_DIR = BASE_DIR / "model"
-
-# # Ensure directories exist
-# DATA_DIR.mkdir(parents=True, exist_ok=True)
-# MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @router.post("/")
@@ -39,8 +32,8 @@ async def upload(files: List[UploadFile] = File(...)):
     saved_files_urls = []
     
     # Define mapping
-    data_exts = {".csv", ".json", ".xlsx"}
-    model_exts = {".pkl", ".joblib", ".onnx"}
+    data_exts = {".csv", '.tsv', ".json", ".xlsx", '.jsonl', '.parquet', '.xml'}
+    model_exts = {".pkl", ".joblib", ".onnx", '.h5', '.pth', '.pt', '.safetensors', '.keras'}
     
     for file in files:
        filename = file.filename
@@ -56,24 +49,49 @@ async def upload(files: List[UploadFile] = File(...)):
        # Decide destination path
        if file_ext in data_exts:
            dest_folder = 'data'
-           
-           if file_ext == ".csv":
-                try:
-                    # Read CSV file.
-                    df = pd.read_csv(io.BytesIO(contents))
-                    # Convert dataframe to a list of dictionaries
-                    records = df.to_dict(orient='records')
-                    
-                    # Prepare data for insertion, adding the source filename to each row
-                    data_to_insert = [
-                        {"source_filename": filename, "row_data": record}
-                        for record in records
-                    ]
-                   
-                    # Insert the records into the 'uploaded_data' table
-                    supabase.table('uploaded_data').insert(data_to_insert).execute()
-                except Exception as e:
-                    raise HTTPException(status_code=500, detail=f"Failed to process and save CSV data: {e}")
+           records_to_insert = []
+
+           try:
+               # Logic to parse file based on extension
+               if file_ext in ['.csv', '.tsv']:
+                   df = pd.read_csv(io.BytesIO(contents))
+                   df = df.where(pd.notna(df), None)
+                   records_to_insert = df.to_dict(orient='records')
+
+               elif file_ext == '.xlsx':
+                   # Note: This reads the first sheet by default
+                   df = pd.read_excel(io.BytesIO(contents), engine='openpyxl')
+                   df = df.where(pd.notna(df), None)
+                   records_to_insert = df.to_dict(orient='records')
+
+               elif file_ext == '.json':
+                   # Assumes the JSON file contains a list of objects
+                   json_data = json.loads(contents)
+                   if isinstance(json_data, list):
+                       records_to_insert = json_data
+                   else: # Handle case where JSON is a single object
+                       records_to_insert = [json_data]
+               
+               elif file_ext == '.jsonl':
+                   # Reads each line as a separate JSON object
+                   records_to_insert = [json.loads(line) for line in io.BytesIO(contents).readlines()]
+
+               elif file_ext == '.parquet':
+                   df = pd.read_parquet(io.BytesIO(contents), engine='pyarrow')
+                   df = df.where(pd.notna(df), None)
+                   records_to_insert = df.to_dict(orient='records')
+
+               # If we have records, insert them into the database
+               if records_to_insert:
+                   data_to_insert = [
+                       {"source_filename": filename, "row_data": record}
+                       for record in records_to_insert
+                   ]
+                   supabase.table('uploaded_data').insert(data_to_insert).execute()
+
+           except Exception as e:
+               raise HTTPException(status_code=500, detail=f"Failed to process and save {file_ext} data: {e}")
+
 
        elif file_ext in model_exts:
            dest_folder = 'model'
