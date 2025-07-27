@@ -55,14 +55,19 @@ async def upload(files: List[UploadFile] = File(...)):
                # Logic to parse file based on extension
                if file_ext in ['.csv', '.tsv']:
                    df = pd.read_csv(io.BytesIO(contents))
-                   df = df.where(pd.notna(df), None)
-                   records_to_insert = df.to_dict(orient='records')
+                   df = df.where(pd.notna(df), None) 
+                   # Convert datetimes to ISO format strings during JSON conversion
+                   json_string = df.to_json(orient='records', date_format='iso')
+                   records_to_insert = json.loads(json_string)
+
 
                elif file_ext == '.xlsx':
                    # Note: This reads the first sheet by default
                    df = pd.read_excel(io.BytesIO(contents), engine='openpyxl')
-                   df = df.where(pd.notna(df), None)
-                   records_to_insert = df.to_dict(orient='records')
+                   df = df.where(pd.notna(df), None) 
+                   # Convert datetimes to ISO format strings during JSON conversion
+                   json_string = df.to_json(orient='records', date_format='iso')
+                   records_to_insert = json.loads(json_string)
 
                elif file_ext == '.json':
                    # Assumes the JSON file contains a list of objects
@@ -79,7 +84,9 @@ async def upload(files: List[UploadFile] = File(...)):
                elif file_ext == '.parquet':
                    df = pd.read_parquet(io.BytesIO(contents), engine='pyarrow')
                    df = df.where(pd.notna(df), None)
-                   records_to_insert = df.to_dict(orient='records')
+                   # Convert datetimes to ISO format strings during JSON conversion
+                   json_string = df.to_json(orient='records', date_format='iso')
+                   records_to_insert = json.loads(json_string)
 
                # If we have records, insert them into the database
                if records_to_insert:
