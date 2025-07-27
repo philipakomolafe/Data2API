@@ -1,5 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import os
+import pandas as pd
+import io 
 import shutil
 from typing import List 
 from pathlib import Path
@@ -44,20 +46,43 @@ async def upload(files: List[UploadFile] = File(...)):
        filename = file.filename
        file_ext = Path(filename).suffix.lower()
 
+       
+       # Read file content
+       contents = await file.read()
+
+       # Reset file pointer to the beginning
+       await file.seek(0)
     
        # Decide destination path
        if file_ext in data_exts:
            dest_folder = 'data'
+           
+           if file_ext == ".csv":
+                try:
+                    # Read CSV file.
+                    df = pd.read_csv(io.BytesIO(contents))
+                    # Convert dataframe to a list of dictionaries
+                    records = df.to_dict(orient='records')
+                    
+                    # Prepare data for insertion, adding the source filename to each row
+                    data_to_insert = [
+                        {"source_filename": filename, "row_data": record}
+                        for record in records
+                    ]
+                   
+                    # Insert the records into the 'uploaded_data' table
+                    supabase.table('uploaded_data').insert(data_to_insert).execute()
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"Failed to process and save CSV data: {e}")
+
        elif file_ext in model_exts:
            dest_folder = 'model'
        else:
            raise HTTPException(status_code=400, detail=f"Unsupported file type: {file_ext}")
 
        # Final file path
-       supabase_path = f"{dest_folder} / {filename}"
+       supabase_path = f"{dest_folder}/{filename}"
 
-       # Read file content
-       contents = await file.read()
 
        # Save file to Supabase bucket
        try:
