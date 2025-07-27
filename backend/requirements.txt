@@ -4,4 +4,3 @@ python-multipart
 supabase
 python-dotenv
 pandas
-json
