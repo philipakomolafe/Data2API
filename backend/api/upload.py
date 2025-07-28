@@ -1,3 +1,12 @@
+import os
+import json
+from typing import List
+from pathlib import Path
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, Header
+from supabase import Client, create_client
+from dotenv import load_dotenv
+
+
 # Load environment variables from .env file
 load_dotenv()
 
