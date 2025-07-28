@@ -1,0 +1,8 @@
+# Ignore virtual environments
+venv/
+*.pyc
+__pycache__/
+
+# Ignore sensitive files
+.env
+data2api.db
