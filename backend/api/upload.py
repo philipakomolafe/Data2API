@@ -90,7 +90,7 @@ async def upload(
     return {
         "message": f"{len(saved_files_urls)} file(s) uploaded successfully.",
         "public_urls": saved_files_urls,
-        'status': 'uploaded'
+        'status': 'successfully uploaded'
     }
 
 @router.get("/my-files")

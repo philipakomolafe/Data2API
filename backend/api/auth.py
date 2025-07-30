@@ -27,7 +27,7 @@ class UserSignIn(BaseModel):
     password: str
 
 # --- Endpoints ---
-@router.post("/signup", tags=["Authentication"])
+@router.post("/signup")
 async def signup(user_credentials: UserCreate):
     """Creates a new user in the Supabase auth system."""
     try:
@@ -55,7 +55,7 @@ async def signup(user_credentials: UserCreate):
         # The Supabase client might raise an exception for existing users
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/login", tags=["Authentication"])
+@router.post("/login")
 async def login(user_credentials: UserSignIn):
     """Signs in a user and returns a JWT access token."""
     try:
