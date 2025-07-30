@@ -3,6 +3,7 @@ import json
 from typing import List
 from pathlib import Path
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, Header
+from fastapi.security imort HTTPBearer, HTTPAuthorizationCredentials
 from supabase import Client, create_client
 from dotenv import load_dotenv
 
@@ -19,11 +20,11 @@ supabase: Client = create_client(url, key)
 BUCKET_NAME = "artifacts"
 
 # --- Authentication Dependency ---
-async def get_current_user(authorization: str = Header(...)):
+bearer_scheme = HTTPBearer()
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
     """Dependency to get user from JWT in Authorization header."""
-    if not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Invalid authorization scheme.")
-    token = authorization.split(" ")[1]
+    token = credentials.credentials
     try:
         # This validates the token and returns the user
         user_response = supabase.auth.get_user(token)
