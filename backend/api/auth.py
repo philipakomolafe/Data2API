@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from supabase import create_client, Client
 from dotenv import load_dotenv
+from typing import Optional
 
 # Load environment variables
 load_dotenv()
@@ -18,6 +19,8 @@ supabase: Client = create_client(url, key)
 class UserCreate(BaseModel):
     email: str
     password: str
+    username: str = Field(..., min_length=3)
+    full_name: Optional[str] = None
 
 class UserSignIn(BaseModel):
     email: str
@@ -31,6 +34,12 @@ async def signup(user_credentials: UserCreate):
         response = supabase.auth.sign_up({
             "email": user_credentials.email,
             "password": user_credentials.password,
+            "options": {
+                "data": {
+                    "username": user_credentials.username,
+                    "full_name": user_credentials.full_name
+                }
+            }
         })
         # Check if user was created successfully
         if response.user:
@@ -54,6 +63,19 @@ async def login(user_credentials: UserSignIn):
             "email": user_credentials.email,
             "password": user_credentials.password
         })
-        return response
+        
+        # Check for a successful login and return a clean response
+        if response.session and response.session.access_token:
+            return {
+                "access_token": response.session.access_token,
+                "token_type": "bearer",
+                "user_id": response.user.id,
+                "user_email": response.user.email
+            }
+        else:
+            # Handle cases where login is not successful but doesn't raise an exception
+            # This can happen if the user's email is not confirmed yet.
+            raise HTTPException(status_code=401, detail="Invalid login credentials or user not verified")
+
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Invalid login credentials: {e}")
