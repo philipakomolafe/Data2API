@@ -4,6 +4,7 @@ from typing import List
 from pathlib import Path
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from werkzeug.utils import secure_filename
 from supabase import Client, create_client
 from dotenv import load_dotenv
 
@@ -49,7 +50,9 @@ async def upload(
     model_exts = {".pkl", ".joblib", ".onnx", '.h5', '.pth', '.pt', '.safetensors', '.keras'}
 
     for file in files:
-        filename = file.filename
+        filename = secure_filename(file.filename)
+        if not filename:
+            continue # Skip files with no name
         file_ext = Path(filename).suffix.lower()
 
         if file_ext in data_exts:
@@ -59,7 +62,7 @@ async def upload(
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported file type: {file_ext}")
 
-        supabase_path = f"{dest_folder}/{filename}"
+        supabase_path = (Path(dest_folder) / filename).as_posix()
         
         try:
             # 1. Upload the file to storage
