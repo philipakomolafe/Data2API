@@ -7,7 +7,7 @@ app = FastAPI()
 # Include the router from Upload.py
 app.include_router(upload.router, prefix="/upload", tags=["File Operations"])
 
-# Include new router instance from Auth.py 
+# Include new router instance from Auth.py
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 
 # Include the pipelines router...
