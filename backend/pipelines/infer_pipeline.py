@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 from supabase import create_client, Client
 from dotenv import load_dotenv
-from ..api.upload import get_current_user
+from api.upload import get_current_user
 
 # Load from environment variables
 load_dotenv()
