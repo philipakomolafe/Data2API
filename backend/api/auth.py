@@ -41,16 +41,23 @@ async def signup(user_credentials: UserCreate):
                 }
             }
         })
-        # Check if user was created successfully
-        if response.user:
-            return {"message": "User created successfully. Please check your email to verify.", "user": response.user}
-        elif response.session is None and response.user is None:
-             # This case often means the user already exists but is unconfirmed.
-             # Supabase's response can be nuanced here.
-             raise HTTPException(status_code=409, detail="User likely already exists.")
+        # If email confirmation disabled, Supabase returns a full session upon signup.
+        if response.session and response.session.access_token:
+            return {
+                "message": "User created and logged in successfully.",
+                "access_token": response.session.access_token,
+                "token_type": 'bearer',
+                "user_id": response.user.id,
+                "user_email": response.user.email,
+            }
+        
+        # If email confirmation is enabled the user object is returned but no session.
+        elif response.user:
+            return {'message': 'User created successfully. Please check your email to confirm your account.'}
+        
         else:
-            return response
-            
+            raise HTTPException(status_code=400, detail="User likely already exists or another error occurred.")
+
     except Exception as e:
         # The Supabase client might raise an exception for existing users
         raise HTTPException(status_code=400, detail=str(e))
