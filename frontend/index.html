@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data2API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Data2API</h1>
+        <p>Turn your models into production-ready APIs.</p>
+
+        <!-- Authentication Section -->
+        <div id="auth-section">
+            <h2>Get Started</h2>
+            <form id="auth-form">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div id="signup-fields">
+                    <input type="text" id="username" placeholder="Username">
+                    <input type="text" id="fullname" placeholder="Full Name">
+                </div>
+                <div class="auth-buttons">
+                    <button type="button" id="login-btn">Login</button>
+                    <button type="button" id="signup-btn">Sign Up</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Logged In Section -->
+        <div id="logged-in-section" class="hidden">
+            <div class="user-info">
+                <p>Welcome, <span id="user-email-display"></span>!</p>
+                <button id="logout-btn">Log Out</button>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="card">
+                <h2>1. Upload Files</h2>
+                <form id="upload-form">
+                    <label for="files">Select preprocessor & model files (.joblib):</label>
+                    <input type="file" id="files" multiple required>
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+
+            <!-- Prediction Section -->
+            <div class="card">
+                <h2>2. Make a Prediction</h2>
+                <form id="predict-form">
+                    <input type="text" id="preprocessor-filename" placeholder="Preprocessor Filename (e.g., my_preprocessor.joblib)" required>
+                    <input type="text" id="model-filename" placeholder="Model Filename (e.g., my_model.joblib)" required>
+                    <textarea id="input-data" placeholder='Enter new data as JSON, e.g., [{"age": 33, "city": "Paris"}]' required></textarea>
+                    <button type="submit">Get Prediction</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- API Response Area -->
+        <div id="response-area" class="hidden">
+            <h3>API Response:</h3>
+            <pre id="response-content"></pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
