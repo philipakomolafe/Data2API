@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Configuration ---
-    const API_BASE_URL = 'https://data2api.onrender.com/';
+    const API_BASE_URL = 'https://data2api.onrender.com';
 
     // --- DOM Elements ---
     const authSection = document.getElementById('auth-section');
