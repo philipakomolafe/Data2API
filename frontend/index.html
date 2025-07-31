@@ -31,13 +31,13 @@
         <!-- Logged In Section -->
         <div id="logged-in-section" class="hidden">
             <div class="user-info">
-                <p>Welcome, <span id="user-email-display"></span>!</p>
+                <p>Welcome, <span id="fullname"></span>!</p>
                 <button id="logout-btn">Log Out</button>
             </div>
 
             <!-- Upload Section -->
             <div class="card">
-                <h2>1. Upload Files</h2>
+                <h2>Upload Files</h2>
                 <form id="upload-form">
                     <label for="files">Select preprocessor & model files (.joblib):</label>
                     <input type="file" id="files" multiple required>
@@ -47,7 +47,7 @@
 
             <!-- Prediction Section -->
             <div class="card">
-                <h2>2. Make a Prediction</h2>
+                <h2>Make a Prediction</h2>
                 <form id="predict-form">
                     <input type="text" id="preprocessor-filename" placeholder="Preprocessor Filename (e.g., my_preprocessor.joblib)" required>
                     <input type="text" id="model-filename" placeholder="Model Filename (e.g., my_model.joblib)" required>
