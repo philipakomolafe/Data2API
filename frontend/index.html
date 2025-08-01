@@ -13,20 +13,24 @@
 
         <!-- Authentication Section -->
         <div id="auth-section">
-            <h2>Get Started</h2>
+            <div class="auth-tabs">
+                <button id="login-tab-btn" class="tab-btn active">Login</button>
+                <button id="signup-tab-btn" class="tab-btn">Sign Up</button>
+            </div>
             <form id="auth-form">
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Password" required>
-                <div id="signup-fields">
+                
+                <!-- These fields will be shown/hidden by JS -->
+                <div id="signup-fields" class="hidden">
                     <input type="text" id="username" placeholder="Username">
                     <input type="text" id="fullname" placeholder="Full Name">
                 </div>
-                <div class="auth-buttons">
-                    <button type="button" id="login-btn">Login</button>
-                    <button type="button" id="signup-btn">Sign Up</button>
-                </div>
+                
+                <button type="submit" id="auth-submit-btn">Login</button>
             </form>
         </div>
+
 
         <!-- Logged In Section -->
         <div id="logged-in-section" class="hidden">
