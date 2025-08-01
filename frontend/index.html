@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,6 @@
         <nav class="navbar">
             <div class="logo">Data2API</div>
             <div class="nav-buttons">
-                <button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
                 <button id="show-login-btn" class="nav-btn">Login</button>
                 <button id="show-signup-btn" class="nav-btn highlight">Sign Up</button>
             </div>
@@ -68,40 +67,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Add a section about preparing model files -->
-        <div class="guide-section">
-            <h2>Preparing Your Files for Upload</h2>
-            <div class="guide-container">
-                <div class="guide-card">
-                    <div class="guide-icon"><i class="fas fa-file-code"></i></div>
-                    <h3>Export Your Preprocessor</h3>
-                    <div class="code-block">
-                        <pre><code>import joblib
-
-# After training your preprocessor
-joblib.dump(preprocessor, 'my_preprocessor.joblib')</code></pre>
-                    </div>
-                    <p>Save your scikit-learn preprocessor (StandardScaler, OneHotEncoder, etc.) as a .joblib file.</p>
-                </div>
-                <div class="guide-card">
-                    <div class="guide-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Export Your Model</h3>
-                    <div class="code-block">
-                        <pre><code>import joblib
-
-# After training your model
-joblib.dump(model, 'my_model.joblib')</code></pre>
-                    </div>
-                    <p>Save your scikit-learn, XGBoost, or any joblib-compatible model as a .joblib file.</p>
-                </div>
-                <div class="guide-card">
-                    <div class="guide-icon"><i class="fas fa-upload"></i></div>
-                    <h3>Upload Both Files</h3>
-                    <p>Upload both files using our dashboard after signing up. Remember their filenames for the prediction step.</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Auth Modal (Pop-up for login/signup) -->
@@ -139,7 +104,6 @@ joblib.dump(model, 'my_model.joblib')</code></pre>
         <nav class="navbar dashboard-nav">
             <div class="logo">Data2API</div>
             <div class="user-menu">
-                <button id="dashboard-theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button>
                 <span id="user-email-display"></span>
                 <button id="logout-btn">Logout</button>
             </div>
@@ -149,74 +113,6 @@ joblib.dump(model, 'my_model.joblib')</code></pre>
             <div class="dashboard-header">
                 <h1>Your Dashboard</h1>
                 <p>Upload models and make predictions from one place</p>
-            </div>
-
-            <!-- Add a guide section to the dashboard -->
-            <div class="card guide-card-dashboard">
-                <div class="card-header">
-                    <h2><i class="fas fa-info-circle"></i> Quick Start Guide</h2>
-                </div>
-                <div class="card-body">
-                    <div class="accordion">
-                        <div class="accordion-item">
-                            <button class="accordion-header">How to prepare your model files</button>
-                            <div class="accordion-content">
-                                <p>Follow these steps to prepare your files for upload:</p>
-                                <ol>
-                                    <li>
-                                        <strong>Export your preprocessor:</strong>
-                                        <div class="code-block-small">
-                                            <pre><code>import joblib
-preprocessor = StandardScaler()  # Or your preprocessor
-preprocessor.fit(X_train)
-joblib.dump(preprocessor, 'my_preprocessor.joblib')</code></pre>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <strong>Export your model:</strong>
-                                        <div class="code-block-small">
-                                            <pre><code>import joblib
-model = RandomForestClassifier()  # Or your model
-model.fit(X_processed, y_train)
-joblib.dump(model, 'my_model.joblib')</code></pre>
-                                        </div>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header">How to use the API in your application</button>
-                            <div class="accordion-content">
-                                <p>After uploading your files, integrate with your application:</p>
-                                <div class="code-block-small">
-                                    <pre><code>import requests
-import json
-
-API_URL = "https://data2api.onrender.com/pipelines/predict"
-TOKEN = "your_auth_token"  # From login response
-
-headers = {
-    "Authorization": f"Bearer {TOKEN}",
-    "Content-Type": "application/json"
-}
-
-payload = {
-    "preprocessor_filename": "my_preprocessor.joblib",
-    "model_filename": "my_model.joblib",
-    "input_data": [{"feature1": value1, "feature2": value2}]
-}
-
-response = requests.post(API_URL, 
-                        headers=headers,
-                        data=json.dumps(payload))
-
-predictions = response.json()["predictions"]
-print(predictions)</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="dashboard">

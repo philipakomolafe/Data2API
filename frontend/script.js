@@ -9,14 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSignupBtn = document.getElementById('show-signup-btn');
     const heroCTABtn = document.getElementById('hero-cta-btn');
     
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    const dashboardThemeToggle = document.getElementById('dashboard-theme-toggle');
-    
-    // Add sun icon to theme toggles
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i><i class="fas fa-sun"></i>';
-    dashboardThemeToggle.innerHTML = '<i class="fas fa-moon"></i><i class="fas fa-sun"></i>';
-    
     // Modal elements
     const authModal = document.getElementById('auth-modal');
     const closeModalBtn = document.getElementById('close-modal');
@@ -56,30 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
     const clearResponseBtn = document.getElementById('clear-response-btn');
     
-    // Accordion elements
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
-    
     // --- State Management ---
     let userToken = localStorage.getItem('userToken');
     let userEmail = localStorage.getItem('userEmail');
-    let currentTheme = localStorage.getItem('theme') || 'light';
 
     // --- UI Management Functions ---
-    // Theme functions
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        currentTheme = theme;
-    }
-    
-    function toggleTheme() {
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-    }
-    
-    // Initialize theme
-    setTheme(currentTheme);
-    
     // Modal functions
     function openModal() {
         authModal.classList.remove('hidden');
@@ -104,17 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loginTabBtn.classList.remove('active');
         signupFormContainer.classList.add('active');
         loginFormContainer.classList.remove('active');
-    }
-    
-    // Accordion functions
-    function toggleAccordion(header) {
-        const content = header.nextElementSibling;
-        header.classList.toggle('active');
-        if (content.classList.contains('active')) {
-            content.classList.remove('active');
-        } else {
-            content.classList.add('active');
-        }
     }
     
     // Auth state
@@ -195,10 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
-    // Theme toggles
-    themeToggle.addEventListener('click', toggleTheme);
-    dashboardThemeToggle.addEventListener('click', toggleTheme);
-    
     // Landing page buttons
     showLoginBtn.addEventListener('click', () => {
         openModal();
@@ -225,13 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tab switching
     loginTabBtn.addEventListener('click', switchToLoginTab);
     signupTabBtn.addEventListener('click', switchToSignupTab);
-    
-    // Accordion functionality
-    accordionHeaders.forEach(header => {
-        header.addEventListener('click', () => {
-            toggleAccordion(header);
-        });
-    });
     
     // Login form submission
     loginForm.addEventListener('submit', async (e) => {
