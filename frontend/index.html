@@ -3,18 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data2API</title>
+    <title>Data2API - ML Models to APIs in Minutes</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Data2API</h1>
-            <p class="tagline">Turn your ML models into production-ready APIs instantly</p>
-        </header>
+    <!-- Landing Page (visible when not logged in) -->
+    <div id="landing-page">
+        <nav class="navbar">
+            <div class="logo">Data2API</div>
+            <div class="nav-buttons">
+                <button id="show-login-btn" class="nav-btn">Login</button>
+                <button id="show-signup-btn" class="nav-btn highlight">Sign Up</button>
+            </div>
+        </nav>
 
-        <!-- Authentication Section -->
-        <div id="auth-section">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Turn Your ML Models Into Production-Ready APIs</h1>
+                <p class="hero-subtitle">Upload your trained model, get a ready-to-use API. No DevOps required.</p>
+                <button id="hero-cta-btn" class="cta-btn">Get Started <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1555952494-efd681c7e3f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="ML Model Visualization">
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Instant API Deployment</h3>
+                <p>Upload your model and get a working API endpoint in seconds, not days.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                <h3>Secure & Authenticated</h3>
+                <p>Every API endpoint is protected with powerful JWT authentication.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-code"></i></div>
+                <h3>Easy Integration</h3>
+                <p>Simple REST API that works with any programming language or platform.</p>
+            </div>
+        </div>
+
+        <div class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Upload Your Model</h3>
+                    <p>Upload your trained model and preprocessor files.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Get Your API Endpoint</h3>
+                    <p>Receive a unique, secure API endpoint for your model.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Integrate & Deploy</h3>
+                    <p>Add the API to your application with a few lines of code.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Pop-up for login/signup) -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close-btn">&times;</span>
+            
             <div class="auth-tabs">
                 <button id="login-tab-btn" class="tab-btn active">Login</button>
                 <button id="signup-tab-btn" class="tab-btn">Sign Up</button>
@@ -38,22 +97,29 @@
                 </form>
             </div>
         </div>
+    </div>
 
-        <!-- Logged In Section -->
-        <div id="logged-in-section" class="hidden">
-            <div class="user-header">
-                <div class="user-info">
-                    <span id="user-email-display"></span>
-                    <small>Logged in</small>
-                </div>
+    <!-- Dashboard (visible when logged in) -->
+    <div id="logged-in-section" class="hidden">
+        <nav class="navbar dashboard-nav">
+            <div class="logo">Data2API</div>
+            <div class="user-menu">
+                <span id="user-email-display"></span>
                 <button id="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Your Dashboard</h1>
+                <p>Upload models and make predictions from one place</p>
             </div>
 
             <div class="dashboard">
                 <!-- Upload Section -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>1. Upload Your Model Files</h2>
+                        <h2><i class="fas fa-upload"></i> Upload Your Model Files</h2>
                     </div>
                     <div class="card-body">
                         <form id="upload-form">
@@ -72,7 +138,7 @@
                 <!-- Prediction Section -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>2. Make Predictions</h2>
+                        <h2><i class="fas fa-brain"></i> Make Predictions</h2>
                     </div>
                     <div class="card-body">
                         <form id="predict-form">
@@ -93,15 +159,15 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- API Response Area -->
-        <div id="response-area" class="hidden">
-            <div class="response-header">
-                <h3>API Response</h3>
-                <button id="clear-response-btn" class="secondary-btn">Clear</button>
+            <!-- API Response Area -->
+            <div id="response-area" class="hidden">
+                <div class="response-header">
+                    <h3><i class="fas fa-terminal"></i> API Response</h3>
+                    <button id="clear-response-btn" class="secondary-btn">Clear</button>
+                </div>
+                <pre id="response-content"></pre>
             </div>
-            <pre id="response-content"></pre>
         </div>
     </div>
 

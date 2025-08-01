@@ -3,6 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_BASE_URL = 'https://data2api.onrender.com';
 
     // --- DOM Elements ---
+    // Landing page elements
+    const landingPage = document.getElementById('landing-page');
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const showSignupBtn = document.getElementById('show-signup-btn');
+    const heroCTABtn = document.getElementById('hero-cta-btn');
+    
+    // Modal elements
+    const authModal = document.getElementById('auth-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    
     // Auth tabs and forms
     const loginTabBtn = document.getElementById('login-tab-btn');
     const signupTabBtn = document.getElementById('signup-tab-btn');
@@ -31,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataInput = document.getElementById('input-data');
     
     // Sections and UI elements
-    const authSection = document.getElementById('auth-section');
     const loggedInSection = document.getElementById('logged-in-section');
     const responseArea = document.getElementById('response-area');
     const responseContent = document.getElementById('response-content');
@@ -44,6 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let userEmail = localStorage.getItem('userEmail');
 
     // --- UI Management Functions ---
+    // Modal functions
+    function openModal() {
+        authModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+    
+    function closeModal() {
+        authModal.classList.add('hidden');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    }
+    
     // Tab switching
     function switchToLoginTab() {
         loginTabBtn.classList.add('active');
@@ -61,13 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Auth state
     function showLoggedInView() {
-        authSection.classList.add('hidden');
+        landingPage.classList.add('hidden');
+        authModal.classList.add('hidden');
         loggedInSection.classList.remove('hidden');
         userEmailDisplay.textContent = userEmail;
     }
     
     function showLoggedOutView() {
-        authSection.classList.remove('hidden');
+        landingPage.classList.remove('hidden');
         loggedInSection.classList.add('hidden');
         responseArea.classList.add('hidden');
         // Reset forms
@@ -136,6 +157,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Event Listeners ---
+    // Landing page buttons
+    showLoginBtn.addEventListener('click', () => {
+        openModal();
+        switchToLoginTab();
+    });
+    
+    showSignupBtn.addEventListener('click', () => {
+        openModal();
+        switchToSignupTab();
+    });
+    
+    heroCTABtn.addEventListener('click', () => {
+        openModal();
+        switchToSignupTab();
+    });
+    
+    // Modal interactions
+    closeModalBtn.addEventListener('click', closeModal);
+    // Close modal when clicking outside
+    authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) closeModal();
+    });
+    
     // Tab switching
     loginTabBtn.addEventListener('click', switchToLoginTab);
     signupTabBtn.addEventListener('click', switchToSignupTab);
