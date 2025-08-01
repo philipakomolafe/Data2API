@@ -8,8 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Data2API</h1>
-        <p>Turn your models into production-ready APIs.</p>
+        <header>
+            <h1>Data2API</h1>
+            <p class="tagline">Turn your ML models into production-ready APIs instantly</p>
+        </header>
 
         <!-- Authentication Section -->
         <div id="auth-section">
@@ -17,53 +19,88 @@
                 <button id="login-tab-btn" class="tab-btn active">Login</button>
                 <button id="signup-tab-btn" class="tab-btn">Sign Up</button>
             </div>
-            <form id="auth-form">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                
-                <!-- These fields will be shown/hidden by JS -->
-                <div id="signup-fields" class="hidden">
-                    <input type="text" id="username" placeholder="Username">
+            
+            <div id="login-form-container" class="form-container active">
+                <form id="login-form" class="auth-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit" class="primary-btn">Login</button>
+                </form>
+            </div>
+            
+            <div id="signup-form-container" class="form-container">
+                <form id="signup-form" class="auth-form">
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <input type="text" id="username" placeholder="Username (min 3 characters)" required>
                     <input type="text" id="fullname" placeholder="Full Name">
-                </div>
-                
-                <button type="submit" id="auth-submit-btn">Login</button>
-            </form>
+                    <button type="submit" class="primary-btn">Create Account</button>
+                </form>
+            </div>
         </div>
-
 
         <!-- Logged In Section -->
         <div id="logged-in-section" class="hidden">
-            <div class="user-info">
-                <p>Welcome, <span id="user-email-display"></span>!</p>
-                <button id="logout-btn">Log Out</button>
+            <div class="user-header">
+                <div class="user-info">
+                    <span id="user-email-display"></span>
+                    <small>Logged in</small>
+                </div>
+                <button id="logout-btn">Logout</button>
             </div>
 
-            <!-- Upload Section -->
-            <div class="card">
-                <h2>Upload Files</h2>
-                <form id="upload-form">
-                    <label for="files">Select preprocessor & model files (.joblib):</label>
-                    <input type="file" id="files" multiple required>
-                    <button type="submit">Upload</button>
-                </form>
-            </div>
+            <div class="dashboard">
+                <!-- Upload Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>1. Upload Your Model Files</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="upload-form">
+                            <div class="form-group">
+                                <label for="files">Select your preprocessor & model files:</label>
+                                <div class="file-upload">
+                                    <input type="file" id="files" multiple required>
+                                    <div class="file-info">No files selected</div>
+                                </div>
+                            </div>
+                            <button type="submit" class="primary-btn">Upload Files</button>
+                        </form>
+                    </div>
+                </div>
 
-            <!-- Prediction Section -->
-            <div class="card">
-                <h2>Make a Prediction</h2>
-                <form id="predict-form">
-                    <input type="text" id="preprocessor-filename" placeholder="Preprocessor Filename (e.g., my_preprocessor.joblib)" required>
-                    <input type="text" id="model-filename" placeholder="Model Filename (e.g., my_model.joblib)" required>
-                    <textarea id="input-data" placeholder='Enter new data as JSON, e.g., [{"age": 33, "city": "Paris"}]' required></textarea>
-                    <button type="submit">Get Prediction</button>
-                </form>
+                <!-- Prediction Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>2. Make Predictions</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="predict-form">
+                            <div class="form-group">
+                                <label for="preprocessor-filename">Preprocessor Filename:</label>
+                                <input type="text" id="preprocessor-filename" placeholder="e.g., my_preprocessor.joblib" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="model-filename">Model Filename:</label>
+                                <input type="text" id="model-filename" placeholder="e.g., my_model.joblib" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-data">Input Data (JSON format):</label>
+                                <textarea id="input-data" placeholder='[{"age": 33, "city": "Paris", "income": 65000}]' required></textarea>
+                            </div>
+                            <button type="submit" class="primary-btn">Get Prediction</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- API Response Area -->
         <div id="response-area" class="hidden">
-            <h3>API Response:</h3>
+            <div class="response-header">
+                <h3>API Response</h3>
+                <button id="clear-response-btn" class="secondary-btn">Clear</button>
+            </div>
             <pre id="response-content"></pre>
         </div>
     </div>
