@@ -9,4 +9,6 @@ pandas
 openpyxl
 pyarrow
 pydantic
-joblib
+joblib==1.5.1
+numpy==1.26.4
+
