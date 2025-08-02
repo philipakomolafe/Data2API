@@ -1,6 +1,6 @@
 werkzeug
 fastapi
-scikit-learn==1.2.2
+scikit-learn
 uvicorn
 python-multipart
 supabase
