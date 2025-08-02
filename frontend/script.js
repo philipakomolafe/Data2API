@@ -270,20 +270,42 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Predict form submission
     predictForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    e.preventDefault();
+    try {
+        // First try to parse the JSON input
+        let inputData;
         try {
-            const inputData = JSON.parse(dataInput.value);
+            inputData = JSON.parse(dataInput.value);
+        } catch (parseError) {
+            displayResponse({ 
+                error: "Invalid JSON format. Please use double quotes for property names and string values.",
+                details: parseError.message,
+                example: '[{"age": 20, "gender": "male", "height": 172}]'
+            });
+            return;
+        }
+
+        // Then try to make the API request
+        try {
             const data = await apiRequest('/pipelines/predict', 'POST', {
                 preprocessor_filename: preprocessorInput.value,
                 model_filename: modelInput.value,
                 input_data: inputData,
             });
             displayResponse(data);
-        } catch (error) {
-            displayResponse({ error: "Prediction failed. Check that your input data is valid JSON." });
-            console.error('Prediction failed:', error);
+        } catch (apiError) {
+            // This will show the actual API error
+            // The displayResponse is already called in the apiRequest function on error
+            console.error('API request failed:', apiError);
         }
-    });
+    } catch (error) {
+        displayResponse({ 
+            error: "Prediction failed unexpectedly.",
+            details: error.message
+        });
+        console.error('Prediction failed:', error);
+    }
+});
 
     // --- Initialize UI based on auth state ---
     if (userToken) {
