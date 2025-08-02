@@ -1,5 +1,6 @@
 werkzeug
 fastapi
+scikit-learn
 uvicorn
 python-multipart
 supabase
