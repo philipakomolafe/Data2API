@@ -46,8 +46,8 @@ async def upload(
     user_id = current_user.id
 
     # Define mapping
-    data_exts = {".csv", '.tsv', ".json", ".xlsx", '.jsonl', '.parquet', '.xml'}
-    model_exts = {".pkl", ".joblib", ".onnx", '.h5', '.pth', '.pt', '.safetensors', '.keras'}
+    data_exts = {".csv", ".xlsx"} # '.tsv', ".json", '.jsonl', '.parquet', '.xml'
+    model_exts = {".pkl", ".joblib"} # ".onnx", '.h5', '.pth', '.pt', '.safetensors', '.keras'
 
     for file in files:
         filename = secure_filename(file.filename)
