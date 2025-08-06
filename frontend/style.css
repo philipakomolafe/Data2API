@@ -22,7 +22,7 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: var(--background-light);
     color: var(--text-dark);
     line-height: 1.6;
     margin: 0;
@@ -30,15 +30,23 @@ body {
     min-height: 100vh;
 }
 
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.hidden {
+    display: none !important;
+}
+
 /* Navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.2rem 5%;
+    background-color: var(--card-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -80,11 +88,7 @@ body {
     padding: 3rem 5%;
     min-height: 80vh;
     align-items: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    margin: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #f9fafb 0%, #eef2ff 100%);
 }
 
 .hero-content {
@@ -145,17 +149,16 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    padding: 3rem 5%;
-    background: transparent;
+    padding: 5rem 5%;
+    background-color: var(--card-bg);
 }
 
 .feature-card {
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-light);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s;
-    text-align: center;
 }
 
 .feature-card:hover {
@@ -179,16 +182,14 @@ body {
 
 /* How it Works Section */
 .how-it-works {
-    padding: 3rem 5%;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 5rem 5%;
+    background-color: var(--background-gray);
     text-align: center;
-    color: white;
 }
 
 .how-it-works h2 {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     margin-bottom: 3rem;
-    color: white;
 }
 
 .steps {
@@ -199,16 +200,12 @@ body {
 }
 
 .step {
-    background: rgba(255, 255, 255, 0.9);
+    flex: 1;
+    max-width: 300px;
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s;
-}
-
-.step:hover {
-    transform: translateY(-10px);
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .step-number {
@@ -546,10 +543,10 @@ textarea {
 .cta-section {
     text-align: center;
     padding: 3rem 5%;
-    background: rgba(255, 255, 255, 0.9);
-    margin: 20px;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-gray);
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .cta-section h2 {
@@ -589,42 +586,3 @@ textarea {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.hero-image-section {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.main-hero-image img {
-    max-width: 100%;
-    height: auto;
-}
-
-.floating-elements {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.floating-cat {
-    position: absolute;
-    width: 80px;
-    top: 10%;
-    right: 10%;
-    animation: float 3s ease-in-out infinite;
-}
-
-.floating-code {
-    position: absolute;
-    width: 100px;
-    bottom: 20%;
-    left: 5%;
-    animation: float 4s ease-in-out infinite reverse;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
